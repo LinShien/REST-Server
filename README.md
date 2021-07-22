@@ -18,4 +18,4 @@ Implementation of REST server. [Tutorial here](https://eli.thegreenplace.net/202
 
 ## Useful golang references 
 * [Synchronizing Structs for Safe Concurrency in Go](https://bbengfort.github.io/2017/02/synchronizing-structs/)
-* [Make vs New in Golang](https://medium.com/d-d-mag/golang-%E7%AD%86%E8%A8%98-make-%E8%88%87-new-%E7%9A%84%E5%B7%AE%E5%88%A5-68b05c7ce016)
+* [make vs new in Golang](https://medium.com/d-d-mag/golang-%E7%AD%86%E8%A8%98-make-%E8%88%87-new-%E7%9A%84%E5%B7%AE%E5%88%A5-68b05c7ce016)
