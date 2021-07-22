@@ -128,7 +128,7 @@ func (ts *TaskServer) taskHandler(rsp http.ResponseWriter, req *http.Request) {
 		id, err := strconv.Atoi(pathParts[1])
 
 		if err != nil {
-			http.Error(rsp, err.Error(), http.StatusBadRequest)
+			http.Error(rsp, "Expect /task/<id> in task handler function", http.StatusBadRequest)
 			return
 		}
 
@@ -146,6 +146,8 @@ func (ts *TaskServer) taskHandler(rsp http.ResponseWriter, req *http.Request) {
 }
 
 func (ts *TaskServer) tagHandler(rsp http.ResponseWriter, req *http.Request) {
+	log.Printf("Handling tasks by tag at %s\n", req.URL.Path)
+
 	if req.Method != http.MethodGet {
 		http.Error(rsp,
 			fmt.Sprintf("Expect method GET at /tag/<tag>, got %v", req.Method),
@@ -165,6 +167,54 @@ func (ts *TaskServer) tagHandler(rsp http.ResponseWriter, req *http.Request) {
 	task := ts.datastore.GetTaskByTag(tag)
 
 	MarshalAndPrepareHTTPResponse(task, rsp)
+}
+
+func (ts *TaskServer) dueHandler(rsp http.ResponseWriter, req *http.Request) {
+	log.Printf("Handling tasks by due at %s\n", req.URL.Path)
+
+	if req.Method != http.MethodGet {
+		http.Error(rsp,
+			fmt.Sprintf("Expect method GET at /due/<date>, got %v", req.Method),
+			http.StatusMethodNotAllowed)
+		return
+	}
+
+	pathParts := TrimAndParseRequestPath(*req)
+
+	prepareBadRequestError := func() {
+		http.Error(rsp,
+			fmt.Sprintf("Expect method GET at /due/<year>/<month>/<day>, got %v", req.Method),
+			http.StatusBadRequest)
+	}
+
+	if len(pathParts) != 4 {
+		prepareBadRequestError()
+		return
+	}
+
+	year, err := strconv.Atoi(pathParts[1])
+
+	if err != nil {
+		prepareBadRequestError()
+		return
+	}
+
+	month, err := strconv.Atoi(pathParts[2])
+
+	if err != nil || (month > 12) || (month < 1) {
+		prepareBadRequestError()
+		return
+	}
+
+	day, err := strconv.Atoi(pathParts[3])
+
+	if err != nil {
+		prepareBadRequestError()
+		return
+	}
+
+	tasks := ts.datastore.GetTaskByDueDate(year, time.Month(month), day)
+	MarshalAndPrepareHTTPResponse(tasks, rsp)
 }
 
 func TrimAndParseRequestPath(req http.Request) []string {
