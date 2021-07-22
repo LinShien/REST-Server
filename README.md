@@ -4,6 +4,12 @@ Implementation of REST server. [Tutorial here](https://eli.thegreenplace.net/202
 * [Use Just Standard Library](#StandardLib)
 
 ## <a name="StandardLib"> Use Just Standard Library </a>
+    POST   /task/              :  creates a new task, and then returns ID
+    GET    /task/<taskid>      :  returns a single task by <taskid> 
+    GET    /task/              :  returns all tasks
+    DELETE /task/<taskid>      :  deletes a task by <taskid>
+    GET    /tag/<tagname>      :  returns list of tasks with <tagname> tag
+    GET    /due/<yy>/<mm>/<dd> :  returns list of tasks due by date <yy>/<mm>/<dd>
 
 ## How to test the REST server
 * Write golang programs and import standard lib "testing".
