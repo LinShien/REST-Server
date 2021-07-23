@@ -4,20 +4,22 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/shien/restserver/stdlib-REST-server/taskserver"
 )
 
 func main() {
 	mux := http.NewServeMux()
-	server := NewTaskServer()
+	server := taskserver.NewTaskServer()
 
-	mux.HandleFunc("/task/", server.taskHandler)
-	mux.HandleFunc("/tag/", server.tagHandler)
-	mux.HandleFunc("/due/", server.dueHandler)
+	mux.HandleFunc("/task/", server.TaskHandler)
+	mux.HandleFunc("/tag/", server.TagHandler)
+	mux.HandleFunc("/due/", server.DueHandler)
 
 	tags := []string{"BBBB", "BBBB"}
-	server.datastore.CreateTask("AAAAAAA", tags, time.Now())
+	server.Datastore.CreateTask("AAAAAAA", tags, time.Now())
 
-	PORT := "9090"
+	const PORT = "9090"
 
 	log.Println("REST Server starting to listen on " + "localhost:" + PORT)
 	log.Fatal(http.ListenAndServe("localhost:"+PORT, mux))

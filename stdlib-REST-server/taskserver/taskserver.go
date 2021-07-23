@@ -1,4 +1,4 @@
-package main
+package taskserver
 
 import (
 	"encoding/json"
@@ -10,17 +10,17 @@ import (
 	"strings"
 	"time"
 
-	"example.com/taskstore"
+	"github.com/shien/restserver/taskstore"
 )
 
 // Backend server wraps the database like taskstore
 type TaskServer struct {
-	datastore *taskstore.TaskStore
+	Datastore *taskstore.TaskStore
 }
 
 func NewTaskServer() *TaskServer {
 	store := taskstore.New()
-	return &TaskServer{datastore: store}
+	return &TaskServer{Datastore: store}
 }
 
 // Handler function for routing and HTTP multiplexer in golang standard lib
@@ -60,7 +60,7 @@ func (ts *TaskServer) createTaskHandler(rsp http.ResponseWriter, req *http.Reque
 		return
 	}
 
-	id := ts.datastore.CreateTask(rt.Text, rt.Tags, rt.Due)
+	id := ts.Datastore.CreateTask(rt.Text, rt.Tags, rt.Due)
 
 	MarshalAndPrepareHTTPResponse(RequestTaskID{Id: id}, rsp)
 }
@@ -68,7 +68,7 @@ func (ts *TaskServer) createTaskHandler(rsp http.ResponseWriter, req *http.Reque
 func (ts *TaskServer) deleteTaskHandler(rsp http.ResponseWriter, req *http.Request, id int) {
 	log.Printf("Handling delete a task at %s\n", req.URL.Path)
 
-	err := ts.datastore.DeleteTask(id)
+	err := ts.Datastore.DeleteTask(id)
 
 	if err != nil {
 		http.Error(rsp, err.Error(), http.StatusNotFound)
@@ -77,13 +77,13 @@ func (ts *TaskServer) deleteTaskHandler(rsp http.ResponseWriter, req *http.Reque
 
 func (ts *TaskServer) deleteAllTasksHandler(rsp http.ResponseWriter, req *http.Request) {
 	log.Printf("Handling delete all tasks at %s\n", req.URL.Path)
-	ts.datastore.DeleteAllTasks()
+	ts.Datastore.DeleteAllTasks()
 }
 
 func (ts *TaskServer) getAllTasksHandler(rsp http.ResponseWriter, req *http.Request) {
 	log.Printf("Handling get all tasks at %s\n", req.URL.Path)
 
-	allTasks := ts.datastore.GetAllTasks() // 1. backend service
+	allTasks := ts.Datastore.GetAllTasks() // 1. backend service
 
 	MarshalAndPrepareHTTPResponse(allTasks, rsp)
 }
@@ -91,7 +91,7 @@ func (ts *TaskServer) getAllTasksHandler(rsp http.ResponseWriter, req *http.Requ
 func (ts *TaskServer) getTaskHandler(rsp http.ResponseWriter, req *http.Request, id int) {
 	log.Printf("Handling get a task at %s\n", req.URL.Path)
 
-	task, err := ts.datastore.GetTask(id)
+	task, err := ts.Datastore.GetTask(id)
 
 	if err != nil {
 		http.Error(rsp, err.Error(), http.StatusNotFound)
@@ -102,7 +102,7 @@ func (ts *TaskServer) getTaskHandler(rsp http.ResponseWriter, req *http.Request,
 }
 
 // handler that sees what REST API should be provided and pass the request to the low-level handlers
-func (ts *TaskServer) taskHandler(rsp http.ResponseWriter, req *http.Request) {
+func (ts *TaskServer) TaskHandler(rsp http.ResponseWriter, req *http.Request) {
 	if req.URL.Path == "/task/" {
 		if req.Method == http.MethodPost {
 			ts.createTaskHandler(rsp, req)
@@ -145,7 +145,7 @@ func (ts *TaskServer) taskHandler(rsp http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (ts *TaskServer) tagHandler(rsp http.ResponseWriter, req *http.Request) {
+func (ts *TaskServer) TagHandler(rsp http.ResponseWriter, req *http.Request) {
 	log.Printf("Handling tasks by tag at %s\n", req.URL.Path)
 
 	if req.Method != http.MethodGet {
@@ -164,12 +164,12 @@ func (ts *TaskServer) tagHandler(rsp http.ResponseWriter, req *http.Request) {
 
 	tag := pathParts[1]
 
-	task := ts.datastore.GetTaskByTag(tag)
+	task := ts.Datastore.GetTaskByTag(tag)
 
 	MarshalAndPrepareHTTPResponse(task, rsp)
 }
 
-func (ts *TaskServer) dueHandler(rsp http.ResponseWriter, req *http.Request) {
+func (ts *TaskServer) DueHandler(rsp http.ResponseWriter, req *http.Request) {
 	log.Printf("Handling tasks by due at %s\n", req.URL.Path)
 
 	if req.Method != http.MethodGet {
@@ -213,7 +213,7 @@ func (ts *TaskServer) dueHandler(rsp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	tasks := ts.datastore.GetTaskByDueDate(year, time.Month(month), day)
+	tasks := ts.Datastore.GetTaskByDueDate(year, time.Month(month), day)
 	MarshalAndPrepareHTTPResponse(tasks, rsp)
 }
 
