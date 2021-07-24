@@ -1,15 +1,34 @@
 # REST-Server
 Implementation of REST server. [Tutorial here](https://eli.thegreenplace.net/2021/rest-servers-in-go-part-1-standard-library/)
 
-* [Use Just Standard Library](#StandardLib)
-
-## <a name="StandardLib"> Use Just Standard Library </a>
+    REST API:
+    
     POST   /task/              :  creates a new task, and then returns ID
     GET    /task/<taskid>      :  returns a single task by <taskid> 
     GET    /task/              :  returns all tasks
     DELETE /task/<taskid>      :  deletes a task by <taskid>
     GET    /tag/<tagname>      :  returns list of tasks with <tagname> tag
     GET    /due/<yy>/<mm>/<dd> :  returns list of tasks due by date <yy>/<mm>/<dd>
+    
+Cients use Http requests with JSON embedded within it to communicate with the REST server.
+
+* [Just Standard Library](#StandardLib)
+* [Router Package](#Router)
+* [Web Framework](#WebFramework)
+
+## <a name="StandardLib"> Just Standard Library </a>
+
+---
+
+## <a name="Router"> Router Package </a>
+<img src="https://i.imgur.com/MIWsXFy.png">
+
+---
+
+## <a name="WebFramework"> Web Framework </a>
+<img src="https://i.imgur.com/CyIvjhP.png">
+
+---
 
 ## How to test the REST server
 * Write golang programs and import standard lib "testing".
