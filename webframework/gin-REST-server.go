@@ -6,7 +6,11 @@ import (
 )
 
 func main() {
-	router := gin.Default()
+	// router := gin.Default()
+	router := gin.New()
+	router.Use(gin.Logger())
+	router.Use(gin.Recovery())
+
 	server := taskserver.NewTaskServerForWebFramework()
 
 	// register, unlike Router package, there is no regexp support in Gin(Web framework)

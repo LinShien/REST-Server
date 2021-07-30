@@ -3,7 +3,6 @@ package taskserver
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"mime"
 	"net/http"
 	"strconv"
@@ -25,8 +24,6 @@ func NewTaskServer() *TaskServer {
 
 // Handler function for routing and HTTP multiplexer in golang standard lib
 func (ts *TaskServer) createTaskHandler(rsp http.ResponseWriter, req *http.Request) {
-	log.Printf("Handling create a task at %s\n", req.URL.Path)
-
 	type RequestTask struct {
 		Text string    `json:"text"`
 		Tags []string  `json:"tags"`
@@ -66,8 +63,6 @@ func (ts *TaskServer) createTaskHandler(rsp http.ResponseWriter, req *http.Reque
 }
 
 func (ts *TaskServer) deleteTaskHandler(rsp http.ResponseWriter, req *http.Request, id int) {
-	log.Printf("Handling delete a task at %s\n", req.URL.Path)
-
 	err := ts.Datastore.DeleteTask(id)
 
 	if err != nil {
@@ -76,21 +71,16 @@ func (ts *TaskServer) deleteTaskHandler(rsp http.ResponseWriter, req *http.Reque
 }
 
 func (ts *TaskServer) deleteAllTasksHandler(rsp http.ResponseWriter, req *http.Request) {
-	log.Printf("Handling delete all tasks at %s\n", req.URL.Path)
 	ts.Datastore.DeleteAllTasks()
 }
 
 func (ts *TaskServer) getAllTasksHandler(rsp http.ResponseWriter, req *http.Request) {
-	log.Printf("Handling get all tasks at %s\n", req.URL.Path)
-
 	allTasks := ts.Datastore.GetAllTasks() // 1. backend service
 
 	MarshalAndPrepareHTTPResponse(allTasks, rsp)
 }
 
 func (ts *TaskServer) getTaskHandler(rsp http.ResponseWriter, req *http.Request, id int) {
-	log.Printf("Handling get a task at %s\n", req.URL.Path)
-
 	task, err := ts.Datastore.GetTask(id)
 
 	if err != nil {
@@ -146,8 +136,6 @@ func (ts *TaskServer) TaskHandler(rsp http.ResponseWriter, req *http.Request) {
 }
 
 func (ts *TaskServer) TagHandler(rsp http.ResponseWriter, req *http.Request) {
-	log.Printf("Handling tasks by tag at %s\n", req.URL.Path)
-
 	if req.Method != http.MethodGet {
 		http.Error(rsp,
 			fmt.Sprintf("Expect method GET at /tag/<tag>, got %v", req.Method),
@@ -170,8 +158,6 @@ func (ts *TaskServer) TagHandler(rsp http.ResponseWriter, req *http.Request) {
 }
 
 func (ts *TaskServer) DueHandler(rsp http.ResponseWriter, req *http.Request) {
-	log.Printf("Handling tasks by due at %s\n", req.URL.Path)
-
 	if req.Method != http.MethodGet {
 		http.Error(rsp,
 			fmt.Sprintf("Expect method GET at /due/<date>, got %v", req.Method),

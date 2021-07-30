@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/shien/restserver/stdlib-REST-server/middleware"
 	"github.com/shien/restserver/stdlib-REST-server/taskserver"
 )
 
@@ -21,8 +22,9 @@ func main() {
 
 	const PORT = "9090"
 
-	log.Println("REST Server starting to listen on " + "localhost:" + PORT)
-	log.Fatal(http.ListenAndServe("localhost:"+PORT, mux))
+	handler := middleware.Loggin(mux)
+	handler = middleware.PanicRecover(handler)
 
-	// log.Fatal(http.ListenAndServeTLS("localhost:"+PORT, "cert.pem", "key.pem", mux))
+	log.Println("REST Server starting to listen on " + "localhost:" + PORT)
+	log.Fatal(http.ListenAndServe("localhost:"+PORT, handler))
 }
