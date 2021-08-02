@@ -1,6 +1,7 @@
 # REST-Server
 Implementation of REST server. [Tutorial here](https://eli.thegreenplace.net/2021/rest-servers-in-go-part-1-standard-library/)
 
+### Our REST API Spec
     REST API:
     
     POST   /task/              :  creates a new task, and then returns ID
@@ -10,7 +11,19 @@ Implementation of REST server. [Tutorial here](https://eli.thegreenplace.net/202
     GET    /tag/<tagname>      :  returns list of tasks with <tagname> tag
     GET    /due/<yy>/<mm>/<dd> :  returns list of tasks due by date <yy>/<mm>/<dd>
     
-Cients use Http requests with JSON embedded within it to communicate with the REST server.
+### What would a HTTP request look like?
+```
+POST /task/ HTTP/1.1
+Host: localhost:9090
+Content-Type: application/json;
+
+{
+  "text" : "AAA",
+  "tags" : ["BBB", "BBB"],
+  "due" : "2020-05-23T18:25:43.511Z"
+}
+```
+Clients use Http requests with JSON embedded within it to communicate with the REST server.
 
 * [Just Standard Library](#StandardLib)
 * [Router Package](#Router)
@@ -48,3 +61,4 @@ Cients use Http requests with JSON embedded within it to communicate with the RE
 * [How to Parse a JSON Request Body in Go](https://www.alexedwards.net/blog/how-to-properly-parse-a-json-request-body)
 * [Mutex in Golang](https://tour.golang.org/concurrency/9)
 * [gorilla/mux](https://github.com/gorilla/mux)
+* [What is Context?](https://zhuanlan.zhihu.com/p/68792989)
