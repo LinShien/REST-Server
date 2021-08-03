@@ -47,11 +47,11 @@ Clients use Http requests with JSON embedded within it to communicate with the R
 ## How to test the REST server
 **1. Write golang programs and import standard lib "testing".**
 
-    `> go test name_of_the_testing.go`
+    > go test name_of_the_testing.go
     
 **2. Public testing API like Advanced Rest Client Application.**
 
-    <img src="https://i.imgur.com/UzxI6P9.png">
+   <img src="https://i.imgur.com/UzxI6P9.png">
 
 ---
 
@@ -89,15 +89,15 @@ mutation {
 }
 ```
 
+---
+
 ### How to make a GraphQL request with HTTP request ?
 **1. gqlgen Playground**
-    ![](https://i.imgur.com/DSToRm3.png)
+    <img src="https://i.imgur.com/DSToRm3.png">
 
 **2. Make a HTTP request and embed the query in the body**
-    ![](https://i.imgur.com/Y3XvmiR.png)
-    
-    
-    ```
+    <img src="https://i.imgur.com/Y3XvmiR.png">
+   
     POST /query HTTP/1.1
     Host: localhost:8080
     Content-Type: application/json;
@@ -105,7 +105,7 @@ mutation {
 
     {"query" : "mutation {\n createTask(input: {\n Text: \"Play PS5\", Tags: [\"AA\", \"BB\"], Due: \"2021-08-01T15:04:05Z\", Attachments: {Name: \"Shien\", Date: \"2021-08-01T15:04:05Z\",Contents: \"None\"} }) {Id,Text,Tags,Due} }"
     }
-    ```
+    
     
 **Note: You have to replace all the newlines to \n in json format.**
     
