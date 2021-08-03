@@ -45,11 +45,11 @@ Clients use Http requests with JSON embedded within it to communicate with the R
 ---
 
 ## How to test the REST server
-**1. Write golang programs and import standard lib "testing".**
+1. **Write golang programs and import standard lib "testing".**
 
     > go test name_of_the_testing.go
     
-**2. Public testing API like Advanced Rest Client Application.**
+2. **Public testing API like Advanced Rest Client Application.**
 
    <img src="https://i.imgur.com/UzxI6P9.png">
 
@@ -89,26 +89,26 @@ mutation {
 }
 ```
 
----
-
 ### How to make a GraphQL request with HTTP request ?
-**1. gqlgen Playground**
+1. **gqlgen Playground**
     <img src="https://i.imgur.com/DSToRm3.png">
 
-**2. Make a HTTP request and embed the query in the body**
+2. **Make a HTTP request and embed the query in the body**
     <img src="https://i.imgur.com/Y3XvmiR.png">
    
+    ```
     POST /query HTTP/1.1
     Host: localhost:8080
     Content-Type: application/json;
     authorization: Basic c2hpZW46MTIzNA==
 
-    {"query" : "mutation {\n createTask(input: {\n Text: \"Play PS5\", Tags: [\"AA\", \"BB\"], Due: \"2021-08-01T15:04:05Z\", Attachments: {Name: \"Shien\", Date: \"2021-08-01T15:04:05Z\",Contents: \"None\"} }) {Id,Text,Tags,Due} }"
-    }
+    {"query" : "mutation {\n createTask(input: {\n Text: \"Play PS5\", Tags: [\"AA\", \"BB\"], Due: \"2021-08-01T15:04:05Z\", Attachments: {Name: \"Shien\", Date: \"2021-08-01T15:04:05Z\",Contents: \"None\"} }) {Id,Text,Tags,Due} }"}
+    ```
     
-    
-**Note: You have to replace all the newlines to \n in json format.**
-    
+    **Note: You have to replace all the newlines to \n in json format.**
+
+---   
+
 ## Useful golang references 
 * [Synchronizing Structs for Safe Concurrency in Go](https://bbengfort.github.io/2017/02/synchronizing-structs/)
 * [make vs new in Golang](https://medium.com/d-d-mag/golang-%E7%AD%86%E8%A8%98-make-%E8%88%87-new-%E7%9A%84%E5%B7%AE%E5%88%A5-68b05c7ce016)
