@@ -9,7 +9,7 @@ import (
 )
 
 type Task struct {
-	Id   int       `json:"id"`
+	ID   int       `json:"id"`
 	Text string    `json:"text"`
 	Tags []string  `json:"tags"`
 	Due  time.Time `json:"due"`
@@ -38,7 +38,7 @@ func (ts *TaskStore) CreateTask(text string, tags []string, due time.Time) int {
 	defer ts.Unlock()
 
 	task := Task{
-		Id:   ts.nextId,
+		ID:   ts.nextId,
 		Text: text,
 		Due:  due}
 
@@ -48,7 +48,7 @@ func (ts *TaskStore) CreateTask(text string, tags []string, due time.Time) int {
 	ts.tasks[ts.nextId] = task
 	ts.nextId++
 
-	return task.Id
+	return task.ID
 }
 
 func (ts *TaskStore) GetTask(id int) (Task, error) {
@@ -60,7 +60,7 @@ func (ts *TaskStore) GetTask(id int) (Task, error) {
 	if ok {
 		return task, nil
 	} else {
-		return Task{}, fmt.Errorf("Task with id = %d not found", id)
+		return Task{}, fmt.Errorf("task with id = %d not found", id)
 	}
 }
 
@@ -69,10 +69,10 @@ func (ts *TaskStore) DeleteTask(id int) error {
 	defer ts.Unlock()
 
 	if _, ok := ts.tasks[id]; !ok {
-		return fmt.Errorf("Task with id = %d not found", id)
-	} else {
-		delete(ts.tasks, id)
+		return fmt.Errorf("task with id = %d not found", id)
 	}
+
+	delete(ts.tasks, id)
 
 	return nil
 }
